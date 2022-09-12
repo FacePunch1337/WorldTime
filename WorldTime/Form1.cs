@@ -13,35 +13,50 @@ namespace WorldTime
 {
     public partial class Form1 : Form
     {
+        private DateTime dateTime;
+        private string worldTime;
+    
         public Form1()
         {
             InitializeComponent();
-            listBox1.Items.Add("New-Yorke");
+           
+            listBox1.Items.Add("New-York");
             listBox1.Items.Add("London");
             listBox1.Items.Add("California");
             listBox1.Items.Add("Tokyo");
             listBox1.Items.Add("Kiyiv");
+            timer1.Start();
         }
 
-        
-
-        private void listBox1_SelectedValueChanged(object sender, EventArgs e)
+       
+        private void timer1_Tick(object sender, EventArgs e)
         {
-            if (listBox1.SelectedItem.ToString() == "Kiyiv")
-            {
-                CultureInfo cultureInfo = new CultureInfo("ua-UA");
-                //TimeZoneInfo timeZoneInfo = new TimeZoneInfo();
-                 
-                
-                var uaTime = DateTime.Now.ToString() + ':' + DateTime.Now.Minute.ToString() + ':' + DateTime.Now.Second.ToString();
-                textBox1.Text = uaTime;
-            }
-            if (listBox1.SelectedItem.ToString() == "Tokyo")
-            {
-                CultureInfo cultureInfo = new CultureInfo("jp-JP");
-                textBox1.Text = cultureInfo.Name;
-            }
 
+            dateTime = DateTime.Now;
+            textBox1.Text = worldTime;
+
+            switch (listBox1.SelectedItem)
+            {
+                case "New-York":
+                    worldTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(dateTime, "Eastern Standard Time").ToString(new CultureInfo("en-US").DateTimeFormat);
+                    break;
+
+                case "London":
+                    worldTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(dateTime, "GMT Standard Time").ToString(new CultureInfo("en-GB").DateTimeFormat);
+                    break;
+
+                case "California":
+                    worldTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(dateTime, "Pacific Standard Time").ToString(new CultureInfo("en-US").DateTimeFormat);
+                    break;
+
+                case "Tokyo":
+                    worldTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(dateTime, "Tokyo Standard Time").ToString(new CultureInfo("ja-JP").DateTimeFormat);
+                    break;
+
+                case "Kiyiv":
+                    worldTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(dateTime, "FLE Standard Time").ToString(new CultureInfo("uk-UA").DateTimeFormat);
+                    break;
+            }
         }
     }
 }
